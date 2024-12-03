@@ -11,12 +11,11 @@ REQUISITOS TP FINAL:
     Almacenamiento temporal
         1 - Gestionar correctamente las opciones de alta, 
         baja, modificación y consulta de datos.
-
+    Funciones del programa
         2 - Utiliza funciones definidas por el usuario
         para cada una de las opciones que posee el menú
         que has implementado.         
         ¿Podría el menú mismo ser una función? SI.
-
         3 - El programa debe permitir:
             Registrar productos.
             Consultar productos.
@@ -24,3 +23,6 @@ REQUISITOS TP FINAL:
             Eliminar productos
             listado completo de productos.
             Reporte de Bajo Stock.
+
+El repositorio tiene agregado en el gitignore la bases de datos,
+por lo que genera una al principio de la ejecucion pero sin datos.
