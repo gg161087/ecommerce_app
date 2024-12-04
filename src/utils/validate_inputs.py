@@ -1,6 +1,9 @@
 def validate_back(prompt):
     return prompt.lower() != 'v'
 
+def validate_code(code):
+    return validate_back(code) and len(code) >= 4 and code.isnumeric()
+
 def validate_name(name):
     return validate_back(name) and len(name) >= 3 and not name.isnumeric()
 

@@ -3,16 +3,16 @@ from colorama import Fore, Back, init
 init(autoreset=True)
 
 def display_divider():
-    print(Fore.YELLOW + '-' * 70)
+    print(Fore.YELLOW + '-' * 78)
 
 def display_table_headers():
-    print(f'\t{Back.GREEN}{"#":<5}{"Producto":<15}{"Precio($)":>15}{"Stock":>15}')
+    print(f'\t{Back.GREEN}{"#":<5}{"Código":<12}{"Producto":<15}{"Precio($)":>15}{"Stock":>15}')
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def display_product(product):    
-    print(f'\t{product['id']:<5}{product['name']:<15}{product['price']:>15.2f}{product['stock']:>15}')
+    print(f'\t{product['id']:<5}{product['code']:<12}{product['name']:<15}{product['price']:>15.2f}{product['stock']:>15}')
 
 def display_products(products):
     display_divider()
@@ -47,3 +47,12 @@ def display_closing_program():
 
 def display_invalid_option():
     print('\t Opción no válida, intente de nuevo: ')
+
+def display_search_menu(dinamico):
+    display_divider()
+    print(f'Menú {dinamico} Producto, Escriba número de opcion ({Fore.YELLOW}1-4{Fore.RESET}):'.center(50))
+    print(f'\t {Fore.YELLOW}1{Fore.RESET}. {Fore.GREEN}{dinamico} Producto por ID')
+    print(f'\t {Fore.YELLOW}2{Fore.RESET}. {Fore.WHITE}{dinamico} Producto por CÓDIGO')
+    print(f'\t {Fore.YELLOW}3{Fore.RESET}. {Fore.BLUE}{dinamico} Producto por NOMBRE')
+    print(f'\t {Fore.YELLOW}4{Fore.RESET}. Volver')
+    display_divider()
