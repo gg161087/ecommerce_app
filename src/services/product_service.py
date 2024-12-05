@@ -10,7 +10,6 @@ def add_product():
     code = 0
     stock = 0
     price = 0
-
     while not back:
         try:
             # Obtener nombre del producto
@@ -33,8 +32,7 @@ def add_product():
             stock = int(stock)
             # Crear el producto si no se vuelve
             if not back:                
-                create_product(code, name, price, stock)
-                print(f'Producto "{name}" agregado con éxito.')
+                create_product(code, name, price, stock)                
                 back = True
         except ValueError as ve:
             print(f'Error en la conversión de datos: {ve}')
@@ -97,7 +95,7 @@ def retrieve_product_by_name():
             break
         else:
             if validate_name(prompt):
-                name = prompt
+                name = prompt.capitalize()
                 product = get_product_dynamic('name', name)
                 if product:
                     display_table_headers()

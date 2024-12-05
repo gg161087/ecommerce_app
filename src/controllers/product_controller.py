@@ -1,8 +1,10 @@
 from src.utils.messages import display_menu, display_search_menu, clear_screen, display_closing_program, display_invalid_option
 from src.services.product_service import add_product, list_products, retrieve_product_by_id, retrieve_product_by_name, retrieve_product_by_code, edit_product, delete_product_by_id, low_stock_report
+from src.data.seed import seeder
 
 def product_menu():
     clear_screen()
+    seeder()
     while True:        
         display_menu()
         prompt = input('\t Seleccione una opción: ')
@@ -64,4 +66,5 @@ def search_product_menu():
                 display_invalid_option()  
         else:
             clear_screen()
-            display_invalid_option()    
+            display_invalid_option()
+ 
