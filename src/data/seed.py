@@ -1,6 +1,6 @@
 import sqlite3 
 from src.data.db_connection import get_connection
-from src.models.product_model import get_product_dynamic
+from src.models.product_model import fetch_product_dynamic
 
 new_products = [
     (1001, 'Fideos', 2400.50, 120),
@@ -21,7 +21,7 @@ new_products = [
 ]
 
 def seeder():
-    product = get_product_dynamic('code', 1001)
+    product = fetch_product_dynamic('code', 1001)
     if not product:
         query = 'INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)'
         conn = get_connection()

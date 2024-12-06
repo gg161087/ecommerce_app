@@ -82,12 +82,12 @@ def display_closing_program():
 def display_invalid_option():
     print('\t Opción no válida, intente de nuevo: ')
 
-def display_search_menu(dinamico):
+def display_dynamic_selector(selector):
     display_divider()
-    print(f'Menú {dinamico} Producto, Escriba número de opcion ({Fore.YELLOW}1-4{Fore.RESET}):'.center(50))
+    print(f'Menú {selector} Producto, Escriba número de opcion ({Fore.YELLOW}1-4{Fore.RESET}):'.center(50))
     display_divider()
-    print(f'\t [{Fore.YELLOW}1{Fore.RESET}] {Fore.GREEN}{dinamico} Producto por ID')
-    print(f'\t [{Fore.YELLOW}2{Fore.RESET}] {Fore.WHITE}{dinamico} Producto por CÓDIGO')
-    print(f'\t [{Fore.YELLOW}3{Fore.RESET}] {Fore.BLUE}{dinamico} Producto por NOMBRE')
+    print(f'\t [{Fore.YELLOW}1{Fore.RESET}] {Fore.GREEN}{selector} Producto por ID')
+    print(f'\t [{Fore.YELLOW}2{Fore.RESET}] {Fore.WHITE}{selector} Producto por CÓDIGO')
+    print(f'\t [{Fore.YELLOW}3{Fore.RESET}] {Fore.BLUE}{selector} Producto por NOMBRE')
     print(f'\t [{Fore.YELLOW}4{Fore.RESET}] Volver')
     display_divider()

@@ -1,7 +1,7 @@
 import sqlite3 
 from src.data.db_connection import get_connection
 
-def create_product(code, name, price, stock):
+def insert_product(code, name, price, stock):
     query = """
         INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)
     """    
@@ -17,7 +17,7 @@ def create_product(code, name, price, stock):
         if 'conn' in locals():  # Verifica si `conn` fue inicializado
             conn.close()
 
-def get_products():
+def fetch_all_products():
     query = 'SELECT * FROM products'   
     conn = get_connection()
     cursor = conn.cursor()
@@ -35,7 +35,7 @@ def get_products():
         if 'conn' in locals():  # Verifica si `conn` fue inicializado
             conn.close()   
 
-def get_product_dynamic(condition, parameter):
+def fetch_product_dynamic(condition, parameter):
     query = f'SELECT * FROM products WHERE {condition} = ?'
     conn = get_connection()
     cursor = conn.cursor()
@@ -58,7 +58,7 @@ def get_product_dynamic(condition, parameter):
         if 'conn' in locals():  # Verifica si `conn` fue inicializado
             conn.close()
 
-def update_product(product_id, code, name, price, stock):
+def update_product_by_id(product_id, code, name, price, stock):
     query = """
         UPDATE products
         SET code = ?, name = ?, price = ?, stock = ?
@@ -79,7 +79,7 @@ def update_product(product_id, code, name, price, stock):
         if 'conn' in locals():  # Verifica si `conn` fue inicializado
             conn.close()   
 
-def delete_product(product_id):
+def delete_product_by_id(product_id):
     query_check = 'SELECT 1 FROM products WHERE id = ?'
     query_delete = 'DELETE FROM products WHERE id = ?'
     conn = get_connection()
@@ -103,7 +103,7 @@ def delete_product(product_id):
         if 'conn' in locals():  # Asegura que la conexión se cierre si fue creada
             conn.close()
     
-def get_products_low_stock():   
+def fetch_low_stock_products():
     query = 'SELECT * FROM products WHERE stock <= 10'
     conn = get_connection()
     cursor = conn.cursor()
