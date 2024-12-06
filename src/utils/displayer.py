@@ -49,6 +49,7 @@ def display_products(products, page_size=5):
             else:
                 print('Ya estás en la primera página.')
         elif choice == 'v':
+            clear_screen()
             break
         else:
             print('Opción no válida. Por favor, intente de nuevo.')
@@ -60,7 +61,7 @@ def display_back_menu():
 
 def display_product_requirements():
     display_divider()
-    print(f'El nombre debe tener al menos 3 caracteres, stock numérico y el \nprecio numérico/mayor que 0.')
+    print(f'El código debe ser numérico y de 4 cifras, \nEl nombre debe tener al menos 3 caracteres, \nEl stock numérico mayor o igual a 0 y \nEl precio numérico/mayor que 0.')
     display_divider()
 
 def display_menu():
@@ -70,7 +71,7 @@ def display_menu():
     print(f'\t [{Fore.YELLOW}1{Fore.RESET}] {Fore.GREEN}Agregar Producto')
     print(f'\t [{Fore.YELLOW}2{Fore.RESET}] {Fore.WHITE}Listar Productos')
     print(f'\t [{Fore.YELLOW}3{Fore.RESET}] {Fore.BLUE}Buscar Producto')
-    print(f'\t [{Fore.YELLOW}4{Fore.RESET}] {Fore.MAGENTA}Editar Producto')
+    print(f'\t [{Fore.YELLOW}4{Fore.RESET}] {Fore.MAGENTA}Actualizar Producto')
     print(f'\t [{Fore.YELLOW}5{Fore.RESET}] {Fore.CYAN}Reporte Productos bajo de Stock')
     print(f'\t [{Fore.YELLOW}6{Fore.RESET}] {Fore.RED}Eliminar Producto')
     print(f'\t [{Fore.YELLOW}7{Fore.RESET}] Salir')
@@ -91,3 +92,6 @@ def display_dynamic_selector(selector):
     print(f'\t [{Fore.YELLOW}3{Fore.RESET}] {Fore.BLUE}{selector} Producto por NOMBRE')
     print(f'\t [{Fore.YELLOW}4{Fore.RESET}] Volver')
     display_divider()
+
+def display_confirm(dynamic):
+    print(f'Desea {dynamic}: [{Fore.YELLOW}S{Fore.RESET}] Si | [{Fore.YELLOW}N{Fore.RESET}] No')
