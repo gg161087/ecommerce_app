@@ -1,4 +1,10 @@
-from src.utils.displayer import display_menu, display_dynamic_selector, clear_screen, display_closing_program, display_invalid_option
+from src.utils.displayer import (
+    display_menu, 
+    display_dynamic_selector, 
+    clear_screen, 
+    display_closing_program, 
+    display_invalid_option
+)
 from src.controllers.product_controller import (
     create_product_controller,
     list_products_controller,

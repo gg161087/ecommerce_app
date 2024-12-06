@@ -1,3 +1,5 @@
+from src.utils.displayer import clear_screen, display_product_requirements, display_back_menu, display_divider
+
 def validate_back(prompt):
     return prompt.lower() != 'v'
 
@@ -29,7 +31,11 @@ def validated_input(prompt, current_value, validation_func=None, allow_skip=True
                 return current_value
 
             if validation_func and not validation_func(user_input):
+                clear_screen()
+                display_back_menu()
+                display_product_requirements()
                 print('Entrada inválida. Inténtalo de nuevo.')
+                display_divider()
             else:
                 input_valid = True  # Cambiar la bandera a True si la entrada es válida
                 return user_input

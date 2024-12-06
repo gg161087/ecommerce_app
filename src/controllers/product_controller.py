@@ -30,22 +30,22 @@ from src.services.product_service import (
 def create_product_controller():
     display_back_menu()
     display_product_requirements()
-    code = validated_input('\tIngrese el código numérico del producto (mín. 4 dígitos): ', '', validate_code)
+    code = validated_input('\tIngrese el código numérico del producto (mín. 4 dígitos): ', '', validate_code, allow_skip=False)
     if code == 'v':
         clear_screen() 
         return
 
-    name = validated_input('\tIngrese el nombre del producto: ', '', validate_name)
+    name = validated_input('\tIngrese el nombre del producto: ', '', validate_name, allow_skip=False)
     if name == 'v': 
         clear_screen()
         return
 
-    price = validated_input('\tIngrese el precio del producto: ', '', validate_price)
+    price = validated_input('\tIngrese el precio del producto: ', '', validate_price, allow_skip=False)
     if price == 'v':
         clear_screen()
         return
 
-    stock = validated_input('\tIngrese el stock inicial: ', '', validate_stock)
+    stock = validated_input('\tIngrese el stock inicial: ', '', validate_stock, allow_skip=False)
     if stock == 'v':
         clear_screen()
         return
@@ -61,10 +61,8 @@ def list_products_controller():
         print('No hay productos disponibles.')
 
 def retrieve_product_by_id():
-    clear_screen()    
     back = False
     while not back:
-        display_back_menu() 
         prompt = input('\t Ingrese el ID del producto: ')            
         if not validate_back(prompt) and (back := True):
             break
@@ -74,6 +72,7 @@ def retrieve_product_by_id():
                 product = search_product('id', product_id)
                 if product:
                     clear_screen()
+                    display_back_menu()
                     display_table_headers()
                     display_product(product)
                     display_divider()                    
@@ -83,7 +82,6 @@ def retrieve_product_by_id():
                 print('El ID del producto debe ser numerico y mayor que 0.')
 
 def retrieve_product_by_code():
-    display_back_menu() 
     back = False
     while not back:
         prompt = input('\t Ingrese el CÓDIGO del producto: ')            
@@ -94,6 +92,8 @@ def retrieve_product_by_code():
                 code = int(prompt)
                 product = search_product('code', code)
                 if product:
+                    clear_screen()
+                    display_back_menu()                    
                     display_table_headers()
                     display_product(product)
                     display_divider()                    
@@ -103,7 +103,6 @@ def retrieve_product_by_code():
                 print('El CÓDIGO del producto debe ser numerico y mayor que 0.')
 
 def retrieve_product_by_name():
-    display_back_menu() 
     back = False
     while not back:
         prompt = input('\t Ingrese el NOMBRE del producto: ')            
@@ -114,6 +113,8 @@ def retrieve_product_by_name():
                 name = prompt.capitalize()
                 product = search_product('name', name)
                 if product:
+                    clear_screen()
+                    display_back_menu()
                     display_table_headers()
                     display_product(product)
                     display_divider()                    
@@ -123,6 +124,7 @@ def retrieve_product_by_name():
                 print('El NOMBRE del producto debe tener al menos 3 caracteres.')
 
 def search_product_controller(condition):
+    display_back_menu()
     if condition == 'id':
         retrieve_product_by_id()
     elif condition == 'code':
@@ -134,8 +136,6 @@ def remove_product_by_id():
     back = False
     confirm = False
     while not back:
-        clear_screen()
-        display_back_menu()
         prompt = input('\t Ingrese el ID del producto a eliminar: ').strip()           
         if not validate_back(prompt) and (back := True):
             break
