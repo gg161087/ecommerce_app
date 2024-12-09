@@ -26,6 +26,8 @@ from src.services.product_service import (
     update_product,
     delete_product,
     get_low_stock_products,
+    add_product_removed,
+    get_all_products_removed
 )
 
 def create_product_controller():
@@ -51,7 +53,7 @@ def create_product_controller():
         clear_screen()
         return
 
-    add_product(int(code), name, float(price), int(stock), 'products')
+    add_product(int(code), name, float(price), int(stock))
     print('Producto agregado exitosamente.')
 
 def list_products_controller():
@@ -63,7 +65,7 @@ def list_products_controller():
         time.sleep(3)
 
 def list_products_removed():
-    products = get_all_products('products_removed')
+    products = get_all_products_removed()
     if products:
         display_products(products)
     else:
@@ -171,7 +173,7 @@ def remove_product_by_id():
                         prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
                         if prompt_confirm == 's':
                             if delete_product(int(product['id'])):
-                                add_product(product['code'], product['name'], product['price'], product['stock'], 'products_removed')
+                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
                                 print('Producto eliminado correctamente.')
                                 time.sleep(3)
                                 break
@@ -208,7 +210,7 @@ def remove_product_by_code():
                         prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
                         if prompt_confirm == 's':
                             if delete_product(int(product['id'])):
-                                add_product(product['code'], product['name'], product['price'], product['stock'], 'products_removed')
+                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
                                 print('Producto eliminado correctamente.')
                                 time.sleep(3)
                                 break
@@ -245,7 +247,7 @@ def remove_product_by_name():
                         prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
                         if prompt_confirm == 's':
                             if delete_product(int(product['id'])):
-                                add_product(product['code'], product['name'], product['price'], product['stock'], 'products_removed')
+                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
                                 print('Producto eliminado correctamente.')
                                 time.sleep(3)
                                 break
