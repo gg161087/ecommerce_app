@@ -1,16 +1,16 @@
 import os
 import sqlite3
 
-DB_NAME = os.path.join(os.path.dirname(__file__), 'products.db')
+PRODUCTS_DB = os.path.join(os.path.dirname(__file__), 'PRODUCTS_DB.db')
 
 def get_connection():
-    return sqlite3.connect(DB_NAME)
+    return sqlite3.connect(PRODUCTS_DB)
 
-def initialize_db():
+def initialize_db(table_name):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS products (
+    cursor.execute(f"""
+        CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             code INTEGER NOT NULL UNIQUE,
             name TEXT NOT NULL,

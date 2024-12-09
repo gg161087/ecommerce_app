@@ -32,26 +32,33 @@ def display_products(products, page_size=5):
         display_table_headers()
         for product in paginated[current_page]:
             display_product(product)
+        display_divider()
+        print(f'\tProductos Total: {len(products)}') 
         if total_pages > 1:
             display_divider()
-            print(f'Página {current_page + 1} de {total_pages}')     
+            print(f'\tPágina {current_page + 1} de {total_pages}.')     
             display_paginated_controls()
         display_divider()
         choice = input('\tSeleccione una opción: ').strip().lower()
         if choice == 's':
             if current_page < total_pages - 1:
+                clear_screen()
                 current_page += 1
             else:
+                clear_screen()
                 print('Ya estás en la última página.')
         elif choice == 'a':
             if current_page > 0:
+                clear_screen()
                 current_page -= 1
             else:
+                clear_screen()
                 print('Ya estás en la primera página.')
         elif choice == 'v':
             clear_screen()
             break
         else:
+            clear_screen()
             print('Opción no válida. Por favor, intente de nuevo.')
 
 def display_back_menu():
@@ -72,7 +79,7 @@ def display_menu():
     print(f'\t [{Fore.YELLOW}2{Fore.RESET}] {Fore.WHITE}Listar Productos')
     print(f'\t [{Fore.YELLOW}3{Fore.RESET}] {Fore.BLUE}Buscar Producto')
     print(f'\t [{Fore.YELLOW}4{Fore.RESET}] {Fore.MAGENTA}Actualizar Producto')
-    print(f'\t [{Fore.YELLOW}5{Fore.RESET}] {Fore.CYAN}Reporte Productos bajo de Stock')
+    print(f'\t [{Fore.YELLOW}5{Fore.RESET}] {Fore.CYAN}Reportes de Productos')
     print(f'\t [{Fore.YELLOW}6{Fore.RESET}] {Fore.RED}Eliminar Producto')
     print(f'\t [{Fore.YELLOW}7{Fore.RESET}] Salir')
     display_divider()
@@ -95,3 +102,18 @@ def display_dynamic_selector(selector):
 
 def display_confirm(dynamic):
     print(f'Desea {dynamic}: [{Fore.YELLOW}S{Fore.RESET}] Si | [{Fore.YELLOW}N{Fore.RESET}] No')
+
+def display_report_menu():
+    display_divider()
+    print(f'Menú REPORTES de Productos, Escriba número de opcion ({Fore.YELLOW}1-3{Fore.RESET}):'.center(50))
+    display_divider()  
+    print(f'\t [{Fore.YELLOW}1{Fore.RESET}] {Fore.YELLOW}Productos Bajo de Stock')
+    print(f'\t [{Fore.YELLOW}2{Fore.RESET}] {Fore.RED}Productos ELIMINADOS')
+    print(f'\t [{Fore.YELLOW}3{Fore.RESET}] Volver')
+    display_divider()
+
+def display_not_found(message):
+    display_divider()
+    print(f'No se encontraron {Fore.YELLOW}{message}{Fore.RESET} disponibles.'.center(50))
+    display_divider()
+    print('\tVolviendo al menu anterior...')

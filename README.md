@@ -25,4 +25,7 @@ REQUISITOS TP FINAL:
             Reporte de Bajo Stock.
 
 El repositorio tiene agregado en el gitignore la bases de datos,
-por lo que genera una al principio de la ejecucion pero sin datos.
+por lo que genera una al principio de la ejecucion.
+Tiene un seeder invocado en el main.py que agrega 15 ejemplos, 
+si falta alguno lo vuelve agregar, para una mayor experiencia 
+probando la aplicación comentar "seeder()" luego de su primera ejecución

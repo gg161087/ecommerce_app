@@ -1,6 +1,5 @@
 import sqlite3 
 from src.data.db_connection import get_connection
-from src.models.product_model import fetch_product_dynamic
 
 new_products = [
     (1001, 'Fideos', 2400.50, 120),
@@ -21,15 +20,19 @@ new_products = [
 ]
 
 def seeder():
-    product = fetch_product_dynamic('code', 1001)
-    if not product:
-        query = 'INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)'
-        conn = get_connection()
-        cursor = conn.cursor()
-        try:
+    query = 'INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)'
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:        
+        cursor.execute('SELECT COUNT(*) FROM products')
+        product_count = cursor.fetchone()[0]
+        if product_count == 0:
+            # Si la base de datos está vacía, insertar todos los productos
             cursor.executemany(query, new_products)
-            conn.commit()
-        except sqlite3.OperationalError:
-            print('Ocurrio un error al crear los productos.')
-        finally:
+            conn.commit()            
+
+    except sqlite3.Error as e:
+        print(f'Error al interactuar con la base de datos: {e}')
+    finally:    
+        if conn:
             conn.close()

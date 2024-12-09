@@ -1,9 +1,9 @@
 import sqlite3 
 from src.data.db_connection import get_connection
 
-def insert_product(code, name, price, stock):
-    query = """
-        INSERT INTO products (code, name, price, stock) VALUES (?, ?, ?, ?)
+def insert_product(code, name, price, stock, table_name):
+    query = f"""
+        INSERT INTO {table_name} (code, name, price, stock) VALUES (?, ?, ?, ?)
     """    
     conn = get_connection()
     cursor = conn.cursor()
@@ -17,8 +17,8 @@ def insert_product(code, name, price, stock):
         if 'conn' in locals():  # Verifica si `conn` fue inicializado
             conn.close()
 
-def fetch_all_products():
-    query = 'SELECT * FROM products'   
+def fetch_all_products(table_name):
+    query = f'SELECT * FROM {table_name}'   
     conn = get_connection()
     cursor = conn.cursor()
     try:

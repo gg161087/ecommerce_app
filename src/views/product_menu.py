@@ -3,7 +3,8 @@ from src.utils.displayer import (
     display_dynamic_selector, 
     clear_screen, 
     display_closing_program, 
-    display_invalid_option
+    display_invalid_option,
+    display_report_menu
 )
 from src.controllers.product_controller import (
     create_product_controller,
@@ -12,6 +13,7 @@ from src.controllers.product_controller import (
     update_product_controller,
     remove_product_controller,
     low_stock_report_controller,
+    list_products_removed
 )
 
 def product_menu():
@@ -37,7 +39,7 @@ def product_menu():
                         update_product_menu()
                     case 5:
                         clear_screen()
-                        low_stock_report_controller()
+                        report_product_menu()
                     case 6:
                         clear_screen()
                         remove_product_menu()
@@ -62,10 +64,10 @@ def search_product_menu():
                 match option:
                     case 1:
                         clear_screen()
-                        search_product_controller('id')                        
+                        search_product_controller('id')                     
                     case 2:
                         clear_screen()
-                        search_product_controller('code')
+                        search_product_controller('code') 
                     case 3:  
                         clear_screen()
                         search_product_controller('name')
@@ -128,6 +130,31 @@ def update_product_menu():
                     case 4:
                         clear_screen()                        
                         break
+            else:
+                clear_screen()
+                display_invalid_option()  
+        else:
+            clear_screen()
+            display_invalid_option()
+
+def report_product_menu():
+    while True:
+        clear_screen()
+        display_report_menu()
+        prompt = input('\t Seleccione una opción: ')
+        if prompt.isnumeric():
+            option = int(prompt)
+            if option > 0 and option <= 3:
+                match option:
+                    case 1:
+                        clear_screen()
+                        low_stock_report_controller()                       
+                    case 2:
+                        clear_screen()
+                        list_products_removed()
+                    case 3:  
+                        clear_screen()
+                        break                    
             else:
                 clear_screen()
                 display_invalid_option()  
