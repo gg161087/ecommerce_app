@@ -54,8 +54,7 @@ def product_menu():
             display_invalid_option()
 
 def search_product_menu():
-    while True:
-        clear_screen()
+    while True:        
         display_dynamic_selector('Buscar')
         prompt = input('\t Seleccione una opción: ')
         if prompt.isnumeric():
@@ -64,41 +63,13 @@ def search_product_menu():
                 match option:
                     case 1:
                         clear_screen()
-                        search_product_controller('id')                     
+                        search_product_controller('ID')                     
                     case 2:
                         clear_screen()
-                        search_product_controller('code') 
+                        search_product_controller('CÓDIGO') 
                     case 3:  
                         clear_screen()
-                        search_product_controller('name')
-                    case 4:
-                        clear_screen()                        
-                        break
-            else:
-                clear_screen()
-                display_invalid_option()  
-        else:
-            clear_screen()
-            display_invalid_option()
-
-def remove_product_menu():    
-    while True:
-        clear_screen()
-        display_dynamic_selector('Eliminar')
-        prompt = input('\t Seleccione una opción: ')
-        if prompt.isnumeric():
-            option = int(prompt)
-            if option > 0 and option <= 4:
-                match option:
-                    case 1:
-                        clear_screen()
-                        remove_product_controller('id')                        
-                    case 2:
-                        clear_screen()
-                        remove_product_controller('code')
-                    case 3:  
-                        clear_screen()
-                        remove_product_controller('name')
+                        search_product_controller('NOMBRE')
                     case 4:
                         clear_screen()                        
                         break
@@ -110,8 +81,7 @@ def remove_product_menu():
             display_invalid_option()
 
 def update_product_menu():
-    while True:
-        clear_screen()
+    while True:        
         display_dynamic_selector('Buscar y Actualizar')
         prompt = input('\t Seleccione una opción: ')
         if prompt.isnumeric():
@@ -120,13 +90,13 @@ def update_product_menu():
                 match option:
                     case 1:
                         clear_screen()
-                        update_product_controller('id')                        
+                        update_product_controller('ID')                        
                     case 2:
                         clear_screen()
-                        update_product_controller('code')
+                        update_product_controller('CÓDIGO')
                     case 3:  
                         clear_screen()
-                        update_product_controller('name')
+                        update_product_controller('NOMBRE')
                     case 4:
                         clear_screen()                        
                         break
@@ -139,7 +109,6 @@ def update_product_menu():
 
 def report_product_menu():
     while True:
-        clear_screen()
         display_report_menu()
         prompt = input('\t Seleccione una opción: ')
         if prompt.isnumeric():
@@ -155,6 +124,33 @@ def report_product_menu():
                     case 3:  
                         clear_screen()
                         break                    
+            else:
+                clear_screen()
+                display_invalid_option()  
+        else:
+            clear_screen()
+            display_invalid_option()
+
+def remove_product_menu():    
+    while True:
+        display_dynamic_selector('Eliminar')
+        prompt = input('\t Seleccione una opción: ')
+        if prompt.isnumeric():
+            option = int(prompt)
+            if option > 0 and option <= 4:
+                match option:
+                    case 1:
+                        clear_screen()
+                        remove_product_controller('ID')                        
+                    case 2:
+                        clear_screen()
+                        remove_product_controller('CÓDIGO')
+                    case 3:  
+                        clear_screen()
+                        remove_product_controller('NOMBRE')
+                    case 4:
+                        clear_screen()                        
+                        break
             else:
                 clear_screen()
                 display_invalid_option()  

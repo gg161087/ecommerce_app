@@ -8,7 +8,7 @@ from src.models.product_model import (
 )
 
 def add_product(code, name, price, stock):
-    insert_product(code, name, price, stock, 'products')
+    return insert_product(code, name, price, stock, 'products')
 
 def get_all_products(table_name):
     return fetch_all_products(table_name)
@@ -26,7 +26,7 @@ def get_low_stock_products():
     return fetch_low_stock_products()
 
 def add_product_removed(code, name, price, stock):
-    insert_product(code, name, price, stock, 'products_removed')
+    return insert_product(code, name, price, stock, 'products_removed')
 
 def get_all_products_removed():
     return fetch_all_products('products_removed')

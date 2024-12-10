@@ -9,7 +9,7 @@ def display_table_headers():
     print(f'\t{Back.GREEN}{"#":<5}{"Código":<12}{"Producto":<15}{"Precio($)":>15}{"Stock":>15}')
 
 def display_paginated_controls():
-    print(f'Opciones: [{Fore.YELLOW}S{Fore.RESET}] Siguiente | [{Fore.YELLOW}A{Fore.RESET}] Anterior | [{Fore.YELLOW}V{Fore.RESET}] Volver')
+    return f'Opciones: [{Fore.YELLOW}S{Fore.RESET}] Siguiente | [{Fore.YELLOW}A{Fore.RESET}] Anterior | [{Fore.YELLOW}V{Fore.RESET}] Volver'
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -22,12 +22,14 @@ def paginate_list(items, page_size=5):
     for i in range(0, len(items), page_size):
         yield items[i:i + page_size]
 
-def display_products(products, page_size=5):
+def display_products(products, title, page_size=5):
     # Muestra los productos en forma paginada en la consola.  
     paginated = list(paginate_list(products, page_size))
     total_pages = len(paginated)
     current_page = 0
     while True:
+        display_divider()
+        print(title)
         display_back_menu()
         display_table_headers()
         for product in paginated[current_page]:
@@ -36,8 +38,8 @@ def display_products(products, page_size=5):
         print(f'\tProductos Total: {len(products)}') 
         if total_pages > 1:
             display_divider()
-            print(f'\tPágina {current_page + 1} de {total_pages}.')     
-            display_paginated_controls()
+            print(f'Página {current_page + 1} de {total_pages}. {display_paginated_controls()}')     
+            #display_paginated_controls()
         display_divider()
         choice = input('\tSeleccione una opción: ').strip().lower()
         if choice == 's':
@@ -46,6 +48,7 @@ def display_products(products, page_size=5):
                 current_page += 1
             else:
                 clear_screen()
+                display_divider()
                 print('Ya estás en la última página.')
         elif choice == 'a':
             if current_page > 0:
@@ -53,6 +56,7 @@ def display_products(products, page_size=5):
                 current_page -= 1
             else:
                 clear_screen()
+                display_divider()
                 print('Ya estás en la primera página.')
         elif choice == 'v':
             clear_screen()
@@ -88,6 +92,7 @@ def display_closing_program():
     print(f'GRACIAS por usar {Back.YELLOW}{Fore.BLACK}E-commerce{Back.RESET}{Fore.RESET}. Saliendo del programa...')
 
 def display_invalid_option():
+    display_divider()
     print('\t Opción no válida, intente de nuevo: ')
 
 def display_dynamic_selector(selector):
@@ -113,7 +118,14 @@ def display_report_menu():
     display_divider()
 
 def display_not_found(message):
+    clear_screen()
+    display_back_menu()
+    print(f'No se encontró/encontraron {Fore.YELLOW}{message}{Fore.RESET}.'.center(50))
     display_divider()
-    print(f'No se encontraron {Fore.YELLOW}{message}{Fore.RESET} disponibles.'.center(50))
+
+def display_remove_message():
+    clear_screen()
+    display_back_menu()
     display_divider()
-    print('\tVolviendo al menu anterior...')
+    print('Producto eliminado correctamente.')
+    display_divider()

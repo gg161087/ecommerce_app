@@ -8,7 +8,9 @@ from src.utils.displayer import (
     display_product, 
     display_confirm,
     clear_screen,
-    display_not_found
+    display_not_found,
+    display_invalid_option,
+    display_remove_message
 )
 from src.utils.validate_inputs import (
     validate_back, 
@@ -53,13 +55,20 @@ def create_product_controller():
         clear_screen()
         return
 
-    add_product(int(code), name, float(price), int(stock))
-    print('Producto agregado exitosamente.')
+    if add_product(int(code), name, float(price), int(stock)):
+        clear_screen()
+        display_divider()
+        print(f'Producto "{name}" agregado con éxito.')
+        display_divider()
+        product = search_product('name', name)
+        if product:
+            display_table_headers()
+            display_product(product)
 
 def list_products_controller():
     products = get_all_products('products')
     if products:
-        display_products(products)
+        display_products(products, 'LISTADO de PRODUCTOS')
     else:
         display_not_found('Productos')        
         time.sleep(3)
@@ -67,239 +76,216 @@ def list_products_controller():
 def list_products_removed():
     products = get_all_products_removed()
     if products:
-        display_products(products)
+        display_divider()        
+        display_products(products, 'REPORTE de Productos ELIMINADOS')
     else:
         display_not_found('Productos Eliminados') 
         time.sleep(3)
 
-def retrieve_product_by_id():
+def search_product_dynamic(condition):
+    condition = condition.upper()
     back = False
     while not back:
-        prompt = input('\t Ingrese el ID del producto: ')            
+        prompt = input(f'\t Ingrese el {condition} del producto a BUSCAR: ').strip()           
         if not validate_back(prompt) and (back := True):
+            clear_screen()
             break
         else:
-            if prompt.isnumeric() and int(prompt) > 0:
-                product_id = int(prompt)
-                product = search_product('id', product_id)
-                if product:
-                    clear_screen()
-                    display_back_menu()
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()                    
+            if condition == 'ID':
+                if validate_id(prompt):
+                    product_id = int(prompt)
+                    product = search_product('id', product_id)
+                    if product:
+                        clear_screen()
+                        display_back_menu()
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()                    
+                    else:
+                        display_not_found(f'producto con ID: {product_id}')                    
                 else:
-                    clear_screen()
-                    display_back_menu()
-                    print(f'No se encontró un producto con ID {product_id}.')
-                    display_divider()
-            else:
-                print('El ID del producto debe ser numerico y mayor que 0.')
-
-def retrieve_product_by_code():
-    back = False
-    while not back:
-        prompt = input('\t Ingrese el CÓDIGO del producto: ')            
-        if not validate_back(prompt) and (back := True):
-            break
-        else:
-            if validate_code(prompt):
-                code = int(prompt)
-                product = search_product('code', code)
-                if product:
-                    clear_screen()
-                    display_back_menu()                    
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()                    
+                    print('El ID del producto debe ser numerico y mayor que 0.')
+            elif condition == 'CÓDIGO':
+                if validate_code(prompt):
+                    code = int(prompt)
+                    product = search_product('code', code)
+                    if product:
+                        clear_screen()
+                        display_back_menu()                    
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()                    
+                    else:
+                        display_not_found(f'producto con CÓDIGO: {code}')
                 else:
-                    clear_screen()
-                    display_back_menu()
-                    print(f'No se encontró un producto con CÓDIGO {code}.')
-                    display_divider()
+                    print('El código debe ser numérico y de 4 cifras.')
             else:
-                print('El código debe ser numérico y de 4 cifras.')
-
-def retrieve_product_by_name():
-    back = False
-    while not back:
-        prompt = input('\t Ingrese el NOMBRE del producto: ')            
-        if not validate_back(prompt) and (back := True):
-            break
-        else:
-            if validate_name(prompt):
-                name = prompt.capitalize()
-                product = search_product('name', name)
-                if product:
-                    clear_screen()
-                    display_back_menu()
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()                    
+                if validate_name(prompt):
+                    name = prompt.capitalize()
+                    product = search_product('name', name)
+                    if product:
+                        clear_screen()
+                        display_back_menu()
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()                    
+                    else:
+                        display_not_found(f'producto con NOMBRE: {name}')
                 else:
-                    clear_screen()
-                    display_back_menu()
-                    print(f'No se encontró un producto con NOMBRE {name}.')
-                    display_divider() 
-            else:
-                print('El NOMBRE del producto debe tener al menos 3 caracteres.')
+                    print('El NOMBRE del producto debe tener al menos 3 caracteres.')
 
 def search_product_controller(condition):
     display_back_menu()
-    if condition == 'id':
-        retrieve_product_by_id()
-    elif condition == 'code':
-        retrieve_product_by_code()
+    condition = condition.upper()
+    if condition == 'ID':
+        search_product_dynamic(condition)
+    elif condition == 'CÓDIGO':
+        search_product_dynamic(condition)
     else:
-        retrieve_product_by_name()
+        search_product_dynamic(condition)
 
-def remove_product_by_id():
+def remove_product_dynamic(condition):
+    condition = condition.upper()
     back = False
     confirm = False
     while not back:
-        prompt = input('\t Ingrese el ID del producto a eliminar: ').strip()           
+        prompt = input(f'\t Ingrese el {condition} del producto a ELIMINAR: ').strip()           
         if not validate_back(prompt) and (back := True):
+            clear_screen()
             break
         else:
-            if validate_id(prompt):
-                product_id = int(prompt)
-                product = search_product('id', product_id)
-                if product:
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()
-                    display_confirm('ELIMINAR')
-                    while not confirm:
-                        prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
-                        if prompt_confirm == 's':
-                            if delete_product(int(product['id'])):
-                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
-                                print('Producto eliminado correctamente.')
-                                time.sleep(3)
-                                break
-                        elif prompt_confirm == 'n':
-                            clear_screen()
-                            display_back_menu()
-                            break                            
-                        else:
-                            print('Elija una opcion valida.')                                     
+            if condition == 'ID':
+                if validate_id(prompt):
+                    product_id = int(prompt)
+                    product = search_product('id', product_id)
+                    if product:
+                        clear_screen()
+                        display_divider()
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()
+                        display_confirm('ELIMINAR')
+                        while not confirm:
+                            prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
+                            if prompt_confirm == 's':
+                                if delete_product(int(product['id'])):
+                                    add_product_removed(product['code'], product['name'], product['price'], product['stock'])
+                                    display_remove_message()
+                                    break
+                            elif prompt_confirm == 'n':
+                                clear_screen()
+                                display_back_menu()
+                                break                            
+                            else:
+                                display_invalid_option()                                                                    
+                    else:
+                        display_not_found(f'producto con ID: {product_id}')                 
                 else:
-                    print(f'No se encontró un producto con ID {product_id}.')
-            else:
-                print('El ID del producto debe ser numerico y mayor que 0.')
-
-def remove_product_by_code():
-    back = False
-    confirm = False
-    while not back:
-        clear_screen()
-        display_back_menu() 
-        prompt = input('\t Ingrese el CÓDIGO del producto a eliminar: ').strip()           
-        if not validate_back(prompt) and (back := True):
-            break
-        else:
-            if validate_code(prompt):
-                code = int(prompt)
-                product = search_product('code', code)
-                if product:
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()
-                    display_confirm('ELIMINAR')
-                    while not confirm:
-                        prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
-                        if prompt_confirm == 's':
-                            if delete_product(int(product['id'])):
-                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
-                                print('Producto eliminado correctamente.')
-                                time.sleep(3)
-                                break
-                        elif prompt_confirm == 'n':
-                            clear_screen()
-                            display_back_menu()
-                            break                            
-                        else:
-                            print('Elija una opcion valida.')                         
+                    print('El ID del producto debe ser numerico y mayor que 0.') 
+            elif condition == 'CÓDIGO':
+                if validate_code(prompt):
+                    code = int(prompt)
+                    product = search_product('code', code)
+                    if product:
+                        clear_screen()
+                        display_divider()
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()
+                        display_confirm('ELIMINAR')
+                        while not confirm:
+                            prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
+                            if prompt_confirm == 's':
+                                if delete_product(int(product['id'])):
+                                    add_product_removed(product['code'], product['name'], product['price'], product['stock'])
+                                    display_remove_message()
+                                    break
+                            elif prompt_confirm == 'n':
+                                clear_screen()
+                                display_back_menu()
+                                break                            
+                            else:
+                                display_invalid_option()                                                    
+                    else:
+                        display_not_found(f'producto con CÓDIGO: {code}')
                 else:
-                    print(f'No se encontró un producto con CÓDIGO {code}.')
+                    print('El CÓDIGO del producto debe ser numerico y mayor que 0.')
             else:
-                print('El CÓDIGO del producto debe ser numerico y mayor que 0.')
-
-def remove_product_by_name():
-    back = False
-    confirm = False
-    while not back:
-        clear_screen()
-        display_back_menu() 
-        prompt = input('\t Ingrese el NOMBRE del producto a eliminar: ')            
-        if not validate_back(prompt) and (back := True):
-            break
-        else:
-            if validate_name(prompt):
-                name = prompt.capitalize()
-                product = search_product('name', name)
-                if product:
-                    display_table_headers()
-                    display_product(product)
-                    display_divider()
-                    display_confirm('ELIMINAR')
-                    while not confirm:
-                        prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
-                        if prompt_confirm == 's':
-                            if delete_product(int(product['id'])):
-                                add_product_removed(product['code'], product['name'], product['price'], product['stock'])
-                                print('Producto eliminado correctamente.')
-                                time.sleep(3)
-                                break
-                        elif prompt_confirm == 'n':
-                            clear_screen()
-                            display_back_menu()
-                            break                            
-                        else:
-                            print('Elija una opcion valida.')                            
+                if validate_name(prompt):
+                    name = prompt.capitalize()
+                    product = search_product('name', name)
+                    if product:
+                        clear_screen()
+                        display_divider()
+                        display_table_headers()
+                        display_product(product)
+                        display_divider()
+                        display_confirm('ELIMINAR')
+                        while not confirm:
+                            prompt_confirm = input('\t Seleccione una opción: ').strip().lower()
+                            if prompt_confirm == 's':
+                                if delete_product(int(product['id'])):
+                                    add_product_removed(product['code'], product['name'], product['price'], product['stock'])
+                                    display_remove_message()
+                                    break
+                            elif prompt_confirm == 'n':
+                                clear_screen()
+                                display_back_menu()
+                                break                            
+                            else:
+                                display_invalid_option()                 
+                    else:
+                        display_not_found(f'producto con NOMBRE {name}')
                 else:
-                    print(f'No se encontró un producto con NOMBRE {name}.')
-            else:
-                print('El NOMBRE del producto debe tener al menos 3 caracteres.')
+                    print('El NOMBRE del producto debe tener al menos 3 caracteres.')
 
 def remove_product_controller(condition):
-    if condition == 'id':
-        remove_product_by_id()
-    elif condition == 'code':
-        remove_product_by_code()
+    display_back_menu() 
+    condition = condition.upper()  
+    if condition == 'ID':
+        remove_product_dynamic(condition)
+    elif condition == 'CÓDIGO':
+        remove_product_dynamic(condition)
     else:
-        remove_product_by_name()
+        remove_product_dynamic(condition)
 
 def new_data_product(product):
     confirm = False
+    clear_screen()
+    display_back_menu()
     display_table_headers()
     display_product(product)
     display_divider()
     display_product_requirements()
     new_code = validated_input('\tNuevo código(Presione enter para dejar el que estaba): ', product['code'], validate_code)
     if new_code == 'v':
-        clear_screen() 
+        clear_screen()
+        display_back_menu() 
         return
     new_name = validated_input('\tNuevo nombre(Presione enter para dejar el que estaba): ', product['name'], validate_name)
     if new_name == 'v':
         clear_screen()
+        display_back_menu()
         return                    
     new_price = validated_input('\tNuevo precio(Presione enter para dejar el que estaba): ', product['price'], validate_price)
     if new_price == 'v':
         clear_screen()
+        display_back_menu()
         return
     new_stock = validated_input('\tNuevo stock(Presione enter para dejar el que estaba): ', product['stock'], validate_stock)
     if new_stock == 'v':
         clear_screen()
+        display_back_menu()
         return                    
     new_product = {
         'id': product['id'],
-        'code': new_code,
+        'code': int(new_code),
         'name': new_name,
-        'price': new_price,
-        'stock': new_stock
+        'price': float(new_price),
+        'stock': int(new_stock)
     }
     clear_screen()
+    display_divider()
     display_table_headers()
     display_product(new_product)
     display_divider()
@@ -318,35 +304,15 @@ def new_data_product(product):
         else:
             print('Elija una opcion valida.') 
 
-def update_product_by_id():
-    clear_screen()
-    display_back_menu()
-    back = False
-    while not back:
-        prompt = input('\t Ingrese el ID del producto a Actualizar: ').strip()           
-        if not validate_back(prompt) and (back := True):
-            break
-        else:
-            if validate_id(prompt):
-                product_id = int(prompt)
-                product = search_product('id', product_id)
-                if product:
-                    new_data_product(product)          
-                else:
-                    print(f'No se encontró un producto con ID {product_id}.')
-            else:
-                print('El ID del producto debe ser numerico y mayor que 0.')
-
 def update_product_dynamic(condition):
     condition = condition.upper()
     back = False
     while not back:
-        clear_screen()
-        display_back_menu()
-        prompt = input(f'\t Ingrese el {condition} del producto a Actualizar: ').strip()           
+        prompt = input(f'\t Ingrese el {condition} del producto a ACTUALIZAR: ').strip()           
         if not validate_back(prompt) and (back := True):
+            clear_screen()
             break
-        else:
+        else:                        
             if condition == 'ID':
                 if validate_id(prompt):
                     product_id = int(prompt)
@@ -354,7 +320,7 @@ def update_product_dynamic(condition):
                     if product:
                         new_data_product(product)          
                     else:
-                        print(f'No se encontró un producto con el ID: {product_id}.')
+                        display_not_found(f'producto con ID: {product_id}')                        
                 else:
                     print('El ID del producto debe ser numerico y mayor que 0.')
             elif condition == 'CODIGO':
@@ -364,29 +330,30 @@ def update_product_dynamic(condition):
                     if product:
                         new_data_product(product)          
                     else:
-                        print(f'No se encontró un producto con el CODIGO: {code}.')
+                        display_not_found(f'producto con CODIGO: {code}')                        
             else:
-                if validate_name(prompt):                    
-                    product = search_product('name', prompt)
+                if validate_name(prompt): 
+                    name = prompt.capitalize()                   
+                    product = search_product('name', name)
                     if product:
                         new_data_product(product)          
                     else:
-                        print(f'No se encontró un producto con el NOMBRE: {prompt}.')                                    
+                        display_not_found(f'producto con NOMBRE: {name}')                                                             
 
 def update_product_controller(condition):
+    display_back_menu()
     condition = condition.upper()
     if condition == 'ID':
-        update_product_dynamic('ID')
-    elif condition == 'CODE':
-        update_product_dynamic('CODIGO')
+        update_product_dynamic(condition)
+    elif condition == 'CÓDIGO':
+        update_product_dynamic(condition)
     else:
-        update_product_dynamic('NOMBRE')
+        update_product_dynamic(condition)
 
 def low_stock_report_controller():
     products = get_low_stock_products()
-    if products:
-        print('Productos con stock bajo:')
-        display_products(products)
+    if products:        
+        display_products(products, 'REPORTE de PRODUCTOS con stock bajo')
     else:
         print('No hay productos con stock bajo.')
         time.sleep(3)

@@ -9,12 +9,13 @@ def insert_product(code, name, price, stock, table_name):
     cursor = conn.cursor()
     try:
         cursor.execute(query, (code, name, price, stock))
-        conn.commit()
-        print(f'Producto "{name}" agregado con éxito.')
+        conn.commit()                    
+        return True
     except sqlite3.IntegrityError as e:
         print(f'Error: El código: {code}, ya existe. Detalles: {e}')
+        return None
     finally:
-        if 'conn' in locals():  # Verifica si `conn` fue inicializado
+        if conn:  # Verifica si `conn` fue inicializado
             conn.close()
 
 def fetch_all_products(table_name):
@@ -32,7 +33,7 @@ def fetch_all_products(table_name):
         print(f'Error al obtener los productos: {e}')
         return None
     finally:
-        if 'conn' in locals():  # Verifica si `conn` fue inicializado
+        if conn:  # Verifica si `conn` fue inicializado
             conn.close()   
 
 def fetch_product_dynamic(condition, parameter):
